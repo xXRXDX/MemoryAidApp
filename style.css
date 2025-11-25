@@ -1,12 +1,425 @@
+/* Shared stylesheet for Short-Term Memory Aid */
+:root {
+  --nav-height: 64px;
+  --nav-bg: rgba(255, 255, 255, 0.88);
+  --nav-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --primary-blue: #b8e0f0;
+  --light-bg: #e8f4f8;
+  --mint-green: #a8e6d4;
+  --coral-orange: #ffb347;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text-dark: #1a1a1a;
+  --text-light: #666;
+}
 
-/* Shared stylesheet injected by ChatGPT fixer */
-:root { --nav-height: 64px; --nav-bg: rgba(255,255,255,0.88); --nav-shadow: 0 4px 14px rgba(0,0,0,0.08); }
-html,body { height:100%; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-body { background: linear-gradient(135deg,#f7f8fc 0%, #e9f1ff 50%, #fefefe 100%); color:#111; padding-top:var(--nav-height); }
-.app-nav { position:fixed; top:0; left:0; right:0; height:var(--nav-height); background:var(--nav-bg); display:flex; align-items:center; gap:12px; padding:0 14px; box-shadow:var(--nav-shadow); z-index:9999; }
-.app-nav .brand { font-weight:700; margin-right:8px; }
-.app-nav a { text-decoration:none; color:#222; padding:8px 10px; border-radius:10px; font-size:14px; }
-.app-nav a:hover { background:rgba(0,0,0,0.06); }
-.container { max-width:1100px; margin:28px auto; padding:18px; background:rgba(255,255,255,0.6); border-radius:14px; box-shadow:0 6px 30px rgba(16,24,40,0.04); }
-img.panel-preview { max-width:100%; height:auto; display:block; margin:12px 0; border-radius:10px; }
-`/* end of stylesheet */`
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #e8f4f8 0%, #c8e6f5 50%, #f0f8ff 100%);
+  color: var(--text-dark);
+  padding-top: var(--nav-height);
+}
+
+.app-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--nav-bg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  box-shadow: var(--nav-shadow);
+  z-index: 9999;
+  overflow-x: auto;
+}
+
+.app-nav .brand {
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.app-nav a {
+  text-decoration: none;
+  color: #222;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.app-nav a:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+main.container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 0;
+}
+
+.phone {
+  max-width: 400px;
+  margin: 0 auto;
+  background: var(--light-bg);
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(16, 24, 40, 0.15);
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.safe {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  margin-bottom: 8px;
+}
+
+.logo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  background: #a8e6d4;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: white;
+}
+
+.kv {
+  font-size: 12px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.small {
+  font-size: 13px;
+  color: var(--primary-blue);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(184, 224, 240, 0.2);
+  transition: all 0.2s ease;
+}
+
+.small:hover {
+  background: rgba(184, 224, 240, 0.35);
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(16, 24, 40, 0.06);
+  margin-bottom: 4px;
+}
+
+/* Character card - centered layout with prominent spacing */
+.character-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px 16px;
+  background: white;
+}
+
+.character-image {
+  width: 120px;
+  height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  margin-bottom: 8px;
+}
+
+.motivational-message {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+
+/* Add New Task button - full width with rounded style */
+.btn-add-task {
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(184, 224, 240, 0.3);
+  width: 100%;
+  max-width: 280px;
+  margin-top: 8px;
+}
+
+.btn-add-task:hover {
+  background: #a0d4e8;
+  box-shadow: 0 6px 16px rgba(184, 224, 240, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-add-task:active {
+  transform: translateY(0);
+}
+
+/* XP Overview section styling */
+.xp-overview-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: var(--text-dark);
+}
+
+.xp-realm-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.xp-realm-item:last-child {
+  border-bottom: none;
+}
+
+.realm-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.realm-icon {
+  font-size: 20px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.realm-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.realm-xp {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* Progress bars for XP realms */
+.realm-xp::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 6px;
+  background: #e8e8e8;
+  border-radius: 3px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.xp-realm-item:nth-child(2) .realm-xp::after {
+  background: linear-gradient(90deg, #a8e6d4 0%, #a8e6d4 60%, #e8e8e8 60%);
+}
+
+.xp-realm-item:nth-child(3) .realm-xp::after {
+  background: linear-gradient(90deg, #ffd89b 0%, #ffd89b 45%, #e8e8e8 45%);
+}
+
+.xp-realm-item:nth-child(4) .realm-xp::after {
+  background: linear-gradient(90deg, #b8c6ff 0%, #b8c6ff 80%, #e8e8e8 80%);
+}
+
+/* Level badge styling with realm-specific colors */
+.level-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.level-badge-mind {
+  background: #d4e8ff;
+  color: #0066cc;
+}
+
+.level-badge-power {
+  background: #ffe8d4;
+  color: #cc6600;
+}
+
+.level-badge-heart {
+  background: #ffd4e8;
+  color: #cc0066;
+}
+
+/* Stats grid styling */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.stat-box {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(16, 24, 40, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.stat-value {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-dark);
+}
+
+.stat-box-level {
+  background: linear-gradient(135deg, #e8f4f8 0%, #d4e8ff 100%);
+}
+
+.stat-box-streak {
+  background: linear-gradient(135deg, #ffe8d4 0%, #ffd4e8 100%);
+}
+
+/* Mood tracker card styling */
+.mood-tracker {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.mood-avatar {
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood-content {
+  flex: 1;
+}
+
+.mood-text {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.btn-mood-tracker {
+  background: var(--light-bg);
+  color: var(--text-dark);
+  border: 1px solid rgba(184, 224, 240, 0.5);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-mood-tracker:hover {
+  background: var(--primary-blue);
+  color: white;
+  border-color: var(--primary-blue);
+}
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0;
+  background: rgba(255, 255, 255, 0.8);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.bottom-nav a {
+  text-decoration: none;
+  color: var(--text-light);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.bottom-nav a:hover {
+  color: var(--primary-blue);
+  background: rgba(184, 224, 240, 0.15);
+}
+
+@media (max-width: 480px) {
+  .app-nav {
+    overflow-x: auto;
+  }
+
+  .phone {
+    border-radius: 0;
+    min-height: 100vh;
+    box-shadow: none;
+  }
+
+  body {
+    padding-top: 0;
+  }
+}
+
