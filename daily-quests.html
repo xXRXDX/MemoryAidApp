@@ -2,28 +2,69 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css">
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Daily Quests</title><link rel="stylesheet" href="styles.css"/></head><body>
-<nav class="app-nav"><div class="brand">App</div><a href="avatar.html">Avatar</a> <a href="community.html">Community</a> <a href="daily-quests.html">Daily Quests</a> <a href="focus-timer.html">Focus Timer</a> <a href="home.html">Home</a> <a href="index.html">Index</a> <a href="main-missions.html">Main Missions</a> <a href="mood-tracker.html">Mood Tracker</a> <a href="panel-extra-1.html">Panel Extra 1</a> <a href="panel-extra-2.html">Panel Extra 2</a> <a href="pet-hangout.html">Pet Hangout</a> <a href="pet-shop.html">Pet Shop</a> <a href="pet-wardrobe.html">Pet Wardrobe</a> <a href="side-quests.html">Side Quests</a> <a href="streak-overview.html">Streak Overview</a> <a href="tasks.html">Tasks</a> <a href="user-info.html">User Info</a> <a href="user-setup.html">User Setup</a></nav>
-<main class="container">
-<div class="phone" role="application" aria-label="Daily Quests">
-    <div class="safe">
-      
-<div class="topbar"><div class="logo"><div class="avatar">ME</div><div><div class="kv">SHORT-TERM MEMORY AID</div><div class="title">Daily Quests</div></div></div><div><a href="home.html" class="small">Back</a></div></div>
-<div class="card"><div class="kv">Daily Quests</div><div style="margin-top:10px">
-  <div class="card" style="margin-bottom:8px;padding:10px"><div style="font-weight:700">Daily walk 15 min</div><div class="kv" style="margin-top:6px">Short description</div></div>
-  <div class="card" style="margin-bottom:8px;padding:10px"><div style="font-weight:700">Drink water</div><div class="kv" style="margin-top:6px">Short description</div></div>
-  <div class="card" style="margin-bottom:8px;padding:10px"><div style="font-weight:700">Stretch</div><div class="kv" style="margin-top:6px">Short description</div></div>
-</div></div>
-
-    </div>
-  </div>
-  <nav class="bottom-nav" role="navigation" aria-label="Main">
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="quests.css"/>
+</head>
+<body>
+<nav class="app-nav">
+    <div class="brand">App</div>
     <a href="home.html">Home</a>
     <a href="tasks.html">Tasks</a>
-    <a href="streak-overview.html">Streak</a>
+    <a href="daily-quests.html">Daily Quests</a>
+    <a href="main-missions.html">Main Missions</a>
+    <a href="side-quests.html">Side Quests</a>
     <a href="avatar.html">Avatar</a>
     <a href="community.html">Community</a>
-  </nav>
+</nav>
+<main class="container">
+    <div class="phone" role="application" aria-label="Daily Quests">
+        <div class="safe">
+            <div class="topbar">
+                <div class="logo">
+                    <div class="avatar">ME</div>
+                    <div>
+                        <div class="kv">SHORT-TERM MEMORY AID</div>
+                        <div class="title">Daily Quests</div>
+                    </div>
+                </div>
+                <div><a href="tasks.html" class="small">Back</a></div>
+            </div>
+            <div class="card">
+                <div id="daily-quests-list"></div>
+            </div>
+        </div>
+    </div>
 </main>
-</body></html>
+
+<script>
+    function loadDailyQuests() {
+        const tasks = JSON.parse(localStorage.getItem('stm_tasks')) || [];
+        const dailyQuests = tasks.filter(t => t.priority === 'medium');
+        const listContainer = document.getElementById('daily-quests-list');
+
+        if (dailyQuests.length === 0) {
+            listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">No daily quests yet. Is It Your rest day 🤭?</div>';
+            return;
+        }
+
+        listContainer.innerHTML = dailyQuests.map(task => `
+        <div class="task-card">
+            <div class="task-card-header">
+                <div class="task-card-title">${task.name}</div>
+                <span class="task-priority-badge badge-medium">Mid</span>
+            </div>
+            <div class="task-timestamp">
+                <span class="task-timestamp-icon">⏰</span>
+                <span>Today, 8:00 AM</span>
+            </div>
+            <button class="task-action-btn" onclick="window.location.href=' focus-timer.html ' ">Accept Quest</button>
+        </div>
+    `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDailyQuests);
+</script>
+</body>
+</html>

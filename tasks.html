@@ -2,33 +2,128 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css">
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Tasks</title><link rel="stylesheet" href="styles.css"/></head><body>
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Tasks</title><link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="task.css"/>
+</head>
+<body>
 <nav class="app-nav"><div class="brand">App</div><a href="avatar.html">Avatar</a> <a href="community.html">Community</a> <a href="daily-quests.html">Daily Quests</a> <a href="focus-timer.html">Focus Timer</a> <a href="home.html">Home</a> <a href="index.html">Index</a> <a href="main-missions.html">Main Missions</a> <a href="mood-tracker.html">Mood Tracker</a> <a href="panel-extra-1.html">Panel Extra 1</a> <a href="panel-extra-2.html">Panel Extra 2</a> <a href="pet-hangout.html">Pet Hangout</a> <a href="pet-shop.html">Pet Shop</a> <a href="pet-wardrobe.html">Pet Wardrobe</a> <a href="side-quests.html">Side Quests</a> <a href="streak-overview.html">Streak Overview</a> <a href="tasks.html">Tasks</a> <a href="user-info.html">User Info</a> <a href="user-setup.html">User Setup</a></nav>
 <main class="container">
-<div class="phone" role="application" aria-label="Tasks">
-    <div class="safe">
-      
-<div class="topbar"><div class="logo"><div class="avatar">ME</div><div><div class="kv">SHORT-TERM MEMORY AID</div><div class="title">Tasks</div></div></div><div><a href="home.html" class="small">Back</a></div></div>
-<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;"><div><div class="kv">My Tasks</div><div style="font-weight:700">Manage your daily goals</div></div><div><button id="add-task-btn" class="button">+ Add Task</button></div></div>
-  <div id="task-list" style="margin-top:12px"></div></div>
+    <div class="phone" role="application" aria-label="Tasks">
+        <div class="safe">
+            <div class="topbar"><div class="logo"><div class="avatar">ME</div><div><div class="kv">SHORT-TERM MEMORY AID</div><div class="title">Tasks</div></div></div><div><a href="tasks.html" class="small">Back</a></div></div>
+            <div class="card">
+                <div class="my-tasks-header">
+                    <div class="kv">My Tasks</div>
+                </div>
 
+                <!-- Replace task list with quest category navigation buttons -->
+                <div id="quest-nav" class="quest-nav-container">
+                    <a href="daily-quests.html" class="quest-nav-btn daily-quests-nav">
+                        <span>Daily Quests</span>
+                    </a>
+                    <a href="main-missions.html" class="quest-nav-btn main-missions-nav">
+                        <span>Main Quests</span>
+                    </a>
+                    <a href="side-quests.html" class="quest-nav-btn side-quests-nav">
+                        <span>Side Quests</span>
+                    </a>
+                </div>
+
+                <!-- Add New Task button at bottom -->
+                <button id="add-task-btn" class="button add-task-bottom">+ Add New Task</button>
+            </div>
+        </div>
     </div>
-  </div>
-  <nav class="bottom-nav" role="navigation" aria-label="Main">
-    <a href="home.html">Home</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="streak-overview.html">Streak</a>
-    <a href="avatar.html">Avatar</a>
-    <a href="community.html">Community</a>
-  </nav>
-  
-<script>
-(function(){ const listEl=document.getElementById('task-list'); const addBtn=document.getElementById('add-task-btn'); const modalWrap=document.createElement('div'); modalWrap.style.display='none'; modalWrap.innerHTML=`<div class="modal-backdrop" id="modal-backdrop"><div class="modal"><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-weight:700">Add New Task</div><button id="modal-close" class="ghost">Close</button></div><div style="margin-top:10px;"><input id="new-task-title" class="input" placeholder="Task title" /><div style="margin-top:8px;"><div class="kv">Priority</div><div style="display:flex;gap:8px;margin-top:6px;"><label><input type="radio" name="p" value="low" /> Low</label><label><input type="radio" name="p" value="medium" checked /> Medium</label><label><input type="radio" name="p" value="high" /> High</label></div></div><div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end;"><button id="cancel-create" class="ghost">Cancel</button><button id="create-task" class="button">Create</button></div></div></div></div>`; document.body.appendChild(modalWrap);
-function load(){ const tasks=JSON.parse(localStorage.getItem('stm_tasks')||'[]'); listEl.innerHTML=''; tasks.forEach(t=>{ const div=document.createElement('div'); div.className='task-list-item'; div.innerHTML=`<label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" ${t.done?'checked':''} data-id="${t.id}"/> <div style="font-weight:${t.done?400:700}">${t.text}</div></label><div><button class="ghost" data-del="${t.id}">Delete</button></div>`; listEl.appendChild(div); }); }
-addBtn.addEventListener('click', ()=> modalWrap.style.display='block');
-document.addEventListener('click', function(e){ if(e.target && e.target.id==='modal-close') modalWrap.style.display='none'; if(e.target && e.target.id==='cancel-create') modalWrap.style.display='none'; if(e.target && e.target.id==='create-task'){ const title=document.getElementById('new-task-title').value.trim(); if(!title) return alert('Enter a task title'); const tasks=JSON.parse(localStorage.getItem('stm_tasks')||'[]'); tasks.unshift({id:Date.now(), text:title, done:false}); localStorage.setItem('stm_tasks', JSON.stringify(tasks)); modalWrap.style.display='none'; load(); } const cb=e.target.closest('input[type="checkbox"]'); if(cb && cb.dataset.id){ const id=Number(cb.dataset.id); const tasks=JSON.parse(localStorage.getItem('stm_tasks')||'[]'); tasks.forEach(t=>{ if(t.id===id) t.done=cb.checked; }); localStorage.setItem('stm_tasks', JSON.stringify(tasks)); load(); } const del=e.target.closest('button[data-del]'); if(del){ const id=Number(del.getAttribute('data-del')); let tasks=JSON.parse(localStorage.getItem('stm_tasks')||'[]'); tasks=tasks.filter(t=>t.id!==id); localStorage.setItem('stm_tasks', JSON.stringify(tasks)); load(); } });
-load(); })();
-</script>
+    <nav class="bottom-nav" role="navigation" aria-label="Main">
+        <a href="home.html">Home</a>
+        <a href="tasks.html">Tasks</a>
+        <a href="streak-overview.html">Streak</a>
+        <a href="avatar.html">Avatar</a>
+        <a href="community.html">Community</a>
+    </nav>
+
+    <script>
+        (function(){
+            const listEl=document.getElementById('task-list');
+            const addBtn=document.getElementById('add-task-btn');
+
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    window.location.href = 'add-task.html';
+                });
+            }
+
+            function load(){
+                const tasks=JSON.parse(localStorage.getItem('stm_tasks')||'[]');
+
+                const dailyQuests = tasks.filter(t => t.priority === 'medium');
+                const mainMissions = tasks.filter(t => t.priority === 'high');
+                const sideQuests = tasks.filter(t => t.priority === 'low');
+
+                listEl.innerHTML = '';
+
+                // Helper function to render quest category
+                function renderCategory(title, questList, categoryClass) {
+                    if (questList.length === 0) return;
+
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = `quest-category ${categoryClass}`;
+
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'quest-category-title';
+                    titleDiv.textContent = title;
+                    categoryDiv.appendChild(titleDiv);
+
+                    const questListDiv = document.createElement('div');
+                    questListDiv.className = 'quest-list';
+
+                    questList.forEach(t => {
+                        const questItem = document.createElement('div');
+                        questItem.className = `quest-item ${t.done ? 'completed' : ''}`;
+                        questItem.innerHTML = `
+          <label style="display:flex;align-items:center;gap:8px;">
+            <input type="checkbox" ${t.done ? 'checked' : ''} data-id="${t.id}"/>
+            <div style="font-weight:${t.done ? 400 : 700}">${t.text}</div>
+          </label>
+          <button class="ghost" data-del="${t.id}">Delete</button>
+        `;
+                        questListDiv.appendChild(questItem);
+                    });
+
+                    categoryDiv.appendChild(questListDiv);
+                    listEl.appendChild(categoryDiv);
+                }
+
+                renderCategory('Daily Quests', dailyQuests, 'daily-quests');
+                renderCategory('Main Missions', mainMissions, 'main-missions');
+                renderCategory('Side Quests', sideQuests, 'side-quests');
+            }
+
+            document.addEventListener('click', function(e){
+                const cb=e.target.closest('input[type="checkbox"]');
+                if(cb && cb.dataset.id){
+                    const id=Number(cb.dataset.id);
+                    const tasks=JSON.parse(localStorage.getItem('stm_tasks')||'[]');
+                    tasks.forEach(t=>{
+                        if(t.id===id) t.done=cb.checked;
+                    });
+                    localStorage.setItem('stm_tasks', JSON.stringify(tasks));
+                    load();
+                }
+
+                const del=e.target.closest('button[data-del]');
+                if(del){
+                    const id=Number(del.getAttribute('data-del'));
+                    let tasks=JSON.parse(localStorage.getItem('stm_tasks')||'[]');
+                    tasks=tasks.filter(t=>t.id!==id);
+                    localStorage.setItem('stm_tasks', JSON.stringify(tasks));
+                    load();
+                }
+            });
+
+            load();
+        })();
+    </script>
 </main>
 </body></html>

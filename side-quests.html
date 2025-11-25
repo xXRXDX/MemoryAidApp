@@ -2,28 +2,72 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css">
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Side Quests</title><link rel="stylesheet" href="styles.css"/></head><body>
-<nav class="app-nav"><div class="brand">App</div><a href="avatar.html">Avatar</a> <a href="community.html">Community</a> <a href="daily-quests.html">Daily Quests</a> <a href="focus-timer.html">Focus Timer</a> <a href="home.html">Home</a> <a href="index.html">Index</a> <a href="main-missions.html">Main Missions</a> <a href="mood-tracker.html">Mood Tracker</a> <a href="panel-extra-1.html">Panel Extra 1</a> <a href="panel-extra-2.html">Panel Extra 2</a> <a href="pet-hangout.html">Pet Hangout</a> <a href="pet-shop.html">Pet Shop</a> <a href="pet-wardrobe.html">Pet Wardrobe</a> <a href="side-quests.html">Side Quests</a> <a href="streak-overview.html">Streak Overview</a> <a href="tasks.html">Tasks</a> <a href="user-info.html">User Info</a> <a href="user-setup.html">User Setup</a></nav>
-<main class="container">
-<div class="phone" role="application" aria-label="Side Quests">
-    <div class="safe">
-      
-<div class="topbar"><div class="logo"><div class="avatar">ME</div><div><div class="kv">SHORT-TERM MEMORY AID</div><div class="title">Side Quests</div></div></div><div><a href="home.html" class="small">Back</a></div></div>
-<div class="card"><div class="kv">Side Quests</div><div style="margin-top:10px">
-  <div class="card" style="margin-bottom:8px;padding:10px"><div style="font-weight:700">Tidy desk</div><div class="kv" style="margin-top:6px">Short description</div></div>
-  <div class="card" style="margin-bottom:8px;padding:10px"><div style="font-weight:700">Call a friend</div><div class="kv" style="margin-top:6px">Short description</div></div>
-  <div class="card" style="margin-bottom:8px;padding:10px"><div style="font-weight:700">Plan meal</div><div class="kv" style="margin-top:6px">Short description</div></div>
-</div></div>
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Tasks</title><link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="quests.css"/>
+</head>
 
-    </div>
-  </div>
-  <nav class="bottom-nav" role="navigation" aria-label="Main">
-    <a href="home.html">Home</a>
+<body>
+<nav class="app-nav">
+    <div class="brand">App</div>
+    <a href="index.html">Home</a>
     <a href="tasks.html">Tasks</a>
-    <a href="streak-overview.html">Streak</a>
-    <a href="avatar.html">Avatar</a>
-    <a href="community.html">Community</a>
-  </nav>
+    <a href="daily-quests.html">Daily Quests</a>
+    <a href="main-missions.html">Main Missions</a>
+    <a href="side-quests.html">Side Quests</a>
+</nav>
+<main class="container">
+    <div class="phone" role="application" aria-label="Side Quests">
+        <div class="safe">
+            <div class="topbar">
+                <div class="logo">
+                    <div class="avatar">ME</div>
+                    <div>
+                        <div class="kv">SHORT-TERM MEMORY AID</div>
+                        <div class="title">Side Quests</div>
+                    </div>
+                </div>
+                <div><a href="tasks.html" class="small">Back</a></div>
+            </div>
+            <div class="card">
+                <div id="side-quests-list"></div>
+            </div>
+        </div>
+    </div>
 </main>
-</body></html>
+<nav class="bottom-nav" role="navigation" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="tasks.html">Tasks</a>
+</nav>
+<script>
+    function loadSideQuests() {
+        const tasks = JSON.parse(localStorage.getItem('stm_tasks')) || [];
+        const sideQuests = tasks.filter(t => t.priority === 'low');
+        const listContainer = document.getElementById('side-quests-list');
+
+        if (sideQuests.length === 0) {
+            listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">No side quests yet. Being Productive generate product :0</div>';
+            return;
+        }
+
+        listContainer.innerHTML = sideQuests.map(task => `
+        <div class="task-card">
+            <div class="task-card-header">
+                <div class="task-card-title">${task.name}</div>
+                <span class="task-priority-badge badge-low">Low</span>
+            </div>
+            <div class="task-timestamp">
+                <span class="task-timestamp-icon">⏰</span>
+                <span>Today, 8:00 AM</span>
+            </div>
+            <button class="task-action-btn" onclick="window.location.href=' focus-timer.html ' ">Accept Quest</button>
+        </div>
+
+    `).join('');
+
+    }
+
+    document.addEventListener('DOMContentLoaded', loadSideQuests);
+</script>
+</body>
+</html>

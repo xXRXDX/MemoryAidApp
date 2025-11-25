@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Add New Task</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="add-task.css"/>
+</head>
+<body>
+<nav class="app-nav">
+    <div class="brand">App</div>
+    <a href="index.html">Home</a>
+</nav>
+
+<main class="container">
+    <div class="phone" role="application" aria-label="Add New Task">
+        <div class="safe">
+
+            <!-- Header -->
+            <div class="topbar">
+                <div class="title">Add New Task</div>
+            </div>
+
+            <!-- Task Form Card -->
+            <div class="card task-form-card">
+
+                <!-- Preferred Task Dropdown -->
+                <div class="form-group">
+                    <select id="preferredTask" class="task-dropdown" aria-label="Select Preferred Task">
+                        <option value="">Select Preferred Task....</option>
+                        <option value="Keep journal">Keep journal</option>
+                        <option value="Take short walks">Take short walks</option>
+                        <option value="Night Review">Night Review</option>
+                        <option value="Clear Space">Clear Space</option>
+                    </select>
+                </div>
+
+                <!-- Custom Task Input -->
+                <div class="form-group">
+                    <label for="customTask" class="form-label">Custom task</label>
+                    <input type="text" id="customTask" class="form-input" placeholder="What do you need to do?" aria-label="Custom task input"/>
+                </div>
+
+                <!-- Description Textarea -->
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea id="description" class="form-textarea" placeholder="Add more details..." aria-label="Task description"></textarea>
+                </div>
+
+            </div>
+
+            <!-- Priority Section -->
+            <div class="priority-section">
+                <div class="priority-label">Priority</div>
+                <div class="priority-buttons">
+                    <button class="priority-btn" data-priority="high" aria-label="High priority">High</button>
+                    <button class="priority-btn" data-priority="medium" aria-label="Medium priority">Medium</button>
+                    <button class="priority-btn" data-priority="low" aria-label="Low priority">Low</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-cancel" onclick="window.history.back()">Cancel</button>
+                <button class="btn-generate" onclick="saveTask()">Generate</button>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<nav class="bottom-nav" role="navigation" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="tasks.html">Tasks</a>
+</nav>
+
+<script>
+    let selectedPriority = 'medium'; // Default priority
+
+    // Handle priority button selection
+    document.querySelectorAll('.priority-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            selectedPriority = this.getAttribute('data-priority');
+        });
+    });
+
+    // Set medium as default on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('[data-priority="medium"]').classList.add('active');
+    });
+
+    function saveTask() {
+        const preferredTask = document.getElementById('preferredTask').value;
+        const customTask = document.getElementById('customTask').value;
+        const description = document.getElementById('description').value;
+
+        // Use custom task if provided, otherwise use preferred task
+        const taskName = customTask || preferredTask;
+
+        if (!taskName) {
+            alert('Please select or enter a task name');
+            return;
+        }
+
+        // Create task object
+        const task = {
+            id: Date.now(),
+            name: taskName,
+            description: description,
+            priority: selectedPriority,
+            createdAt: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        };
+
+        // Get existing tasks or create empty array
+        let tasks = JSON.parse(localStorage.getItem('stm_tasks')) || [];
+
+        // Add new task
+        tasks.push(task);
+
+        // Save to localStorage
+        localStorage.setItem('stm_tasks', JSON.stringify(tasks));
+
+        const questPage = {
+            'high': 'main-missions.html',
+            'medium': 'daily-quests.html',
+            'low': 'side-quests.html'
+        }[selectedPriority];
+
+        window.location.href = questPage;
+    }
+</script>
+</body>
+</html>
