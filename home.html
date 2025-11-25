@@ -4,26 +4,116 @@
     <link rel="stylesheet" href="style.css">
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Home</title><link rel="stylesheet" href="styles.css"/></head><body>
-<nav class="app-nav"><div class="brand">App</div><a href="avatar.html">Avatar</a> <a href="community.html">Community</a> <a href="daily-quests.html">Daily Quests</a> <a href="focus-timer.html">Focus Timer</a> <a href="home.html">Home</a> <a href="index.html">Index</a> <a href="main-missions.html">Main Missions</a> <a href="mood-tracker.html">Mood Tracker</a> <a href="panel-extra-1.html">Panel Extra 1</a> <a href="panel-extra-2.html">Panel Extra 2</a> <a href="pet-hangout.html">Pet Hangout</a> <a href="pet-shop.html">Pet Shop</a> <a href="pet-wardrobe.html">Pet Wardrobe</a> <a href="side-quests.html">Side Quests</a> <a href="streak-overview.html">Streak Overview</a> <a href="tasks.html">Tasks</a> <a href="user-info.html">User Info</a> <a href="user-setup.html">User Setup</a></nav>
+</head>
+<body>
+<nav class="app-nav">
+  <div class="brand">App</div>
+  <a href="avatar.html">Avatar</a> 
+  <a href="community.html">Community</a> 
+  <a href="daily-quests.html">Daily Quests</a>
+  <a href="home.html">Home</a>
+  <a href="index.html">Index</a> 
+  <a href="main-missions.html">Main Missions</a>
+  <a href="mood-tracker.html">Mood Tracker</a>
+  <a href="streak-overview.html">Streak Overview</a> 
+  <a href="tasks.html">Tasks</a>
+  <a href="user-info.html">User Info</a> 
+  <a href="user-setup.html">User Setup</a>
+</nav>
+
 <main class="container">
-<div class="phone" role="application" aria-label="Home">
+  <div class="phone" role="application" aria-label="Home">
     <div class="safe">
       
-<div class="topbar"><div class="logo"><div class="avatar">ME</div><div><div class="kv">SHORT-TERM MEMORY AID</div><div class="title">Home</div></div></div><div><a href="user-setup.html" class="small">Setup</a></div></div>
-<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;"><div><div class="kv">Good day,</div><div style="font-weight:700;font-size:16px;" id="greet">Friend</div></div><div style="font-size:28px">🐥</div></div>
-  <div style="margin-top:12px" class="grid-2"><div class="card"><div class="kv">Daily Streak</div><div style="font-weight:700;margin-top:6px">Day <span id="streak">3</span></div></div><div class="card"><div class="kv">Focus Timer</div><div style="font-weight:700;margin-top:6px">25:00</div></div></div>
-</div>
+      <div class="topbar">
+        <div class="logo">
+          <div class="avatar">ME</div>
+          <div>
+            <div class="kv">SHORT-TERM MEMORY AID</div>
+            <div class="title">Home</div>
+          </div>
+        </div>
+        <div><a href="user-setup.html" class="small">Setup</a></div>
+      </div>
+
+      <div class="card character-card">
+        <img src="img.png?height=140&width=120" alt="Character mascot" class="character-image" />
+        <div class="motivational-message">Let's start something today!</div>
+        <button class="btn-add-task">+ Add New Task</button>
+      </div>
+
+      <div class="card">
+        <div class="xp-overview-title">XP Overview</div>
+        
+        <div class="xp-realm-item">
+          <div class="realm-content">
+            <span class="realm-icon">🧠</span>
+            <div>
+              <div class="realm-label">Main Mission - Wisdom XP</div>
+              <div class="realm-xp">60/100</div>
+            </div>
+          </div>
+          <div class="level-badge level-badge-mind">Level 2</div>
+        </div>
+
+        <div class="xp-realm-item">
+          <div class="realm-content">
+            <span class="realm-icon">⚡</span>
+            <div>
+              <div class="realm-label">Daily Quest- Strength XP</div>
+              <div class="realm-xp">45/100</div>
+            </div>
+          </div>
+          <div class="level-badge level-badge-power">Level 1</div>
+        </div>
+
+        <div class="xp-realm-item">
+          <div class="realm-content">
+            <span class="realm-icon">❤️</span>
+            <div>
+              <div class="realm-label">Side Quest - Spirit XP</div>
+              <div class="realm-xp">80/100</div>
+            </div>
+          </div>
+          <div class="level-badge level-badge-heart">Level 4</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box stat-box-level">
+          <div class="stat-label">Total Player Level</div>
+          <div class="stat-value stat-value-level">Lv.5</div>
+        </div>
+        <div class="stat-box stat-box-streak">
+          <div class="stat-label">Streak (Daily Tasks)</div>
+          <div class="stat-value stat-value-streak">🔥 5-Day Combo!</div>
+        </div>
+      </div>
+
+      <div class="card mood-tracker">
+        <div class="mood-avatar">😊</div>
+        <div class="mood-content">
+          <div class="mood-text">Hi 👋 How are you feeling today?</div>
+          <button class="btn-mood-tracker">Open Mood Tracker</button>
+        </div>
+      </div>
 
     </div>
   </div>
-  <nav class="bottom-nav" role="navigation" aria-label="Main">
-    <a href="home.html">Home</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="streak-overview.html">Streak</a>
-    <a href="avatar.html">Avatar</a>
-    <a href="community.html">Community</a>
-  </nav>
-  
-<script>document.addEventListener('DOMContentLoaded', function(){ document.getElementById('greet').textContent = localStorage.getItem('stm_username') || 'Friend'; });</script>
 </main>
-</body></html>
+
+<nav class="bottom-nav" role="navigation" aria-label="Main">
+  <a href="home.html">Home</a>
+  <a href="tasks.html">Tasks</a>
+  <a href="streak-overview.html">Streak</a>
+  <a href="avatar.html">Avatar</a>
+  <a href="community.html">Community</a>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('greet').textContent = localStorage.getItem('stm_username') || 'Friend';
+  });
+</script>
+</body>
+</html>
