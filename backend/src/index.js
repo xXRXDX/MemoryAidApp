@@ -1,27 +1,29 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const connectDB = require("./config/db");
+import dotenv from "dotenv";
+dotenv.config();
 
-const userRoutes = require("./routes/userRoutes");
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+
+import userRoutes from "./routes/userRoutes.js";
+import questRoutes from "./routes/questRoutes.js";
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Database
-connectDB();
+// ROUTES
+app.use("/auth", userRoutes);
+app.use("/quest", questRoutes);
 
-// Routes
-app.use("/api/auth", userRoutes);
+// MONGO CONNECT
+mongoose.connect(process.env.MONGO_URI, {
+  dbName: "memoryapp",
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.error("Mongo connection error:", err));
 
-// Test route
-app.get("/", (req, res) => {
-  res.send("Backend running...");
-});
-
-// Start
+// SERVER
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("Server running on port", PORT));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
