@@ -9,6 +9,8 @@ import { startInMemoryMongo } from './utils/db.js';
 import userRoutes from './routes/userRoutes.js';
 import questRoutes from './routes/questRoutes.js';
 
+import moodRoutes from "./routes/mood.js";
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -16,6 +18,7 @@ app.use(express.json());
 // routes
 app.use('/api/auth', userRoutes);
 app.use('/api/quests', questRoutes);
+app.use("/api/mood", moodRoutes);
 
 // connect to DB: prefer MONGO_URI, else start in-memory
 const MONGO_URI = process.env.MONGO_URI;
