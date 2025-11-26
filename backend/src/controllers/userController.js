@@ -1,63 +1,53 @@
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-async function register(req, res) {
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_key';
+
+export async function register(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, gamifiedName } = req.body;
+    if (!username || !email || !password) return res.status(400).json({ success:false, message:'Missing fields' });
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "Email already exists" });
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ success:false, message:'Email already used' });
 
     const hashed = await bcrypt.hash(password, 10);
+    const user = await User.create({ username, email, password: hashed, gamifiedName });
 
-    const user = await User.create({
-      username,
-      email,
-      password: hashed
-    });
-
-    res.json({ message: "User registered", user });
+    return res.json({ success:true, message:'User created', data:{ id:user._id } });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Registration error" });
+    return res.status(500).json({ success:false, message:'Registration failed' });
   }
 }
 
-async function login(req, res) {
+export async function login(req, res) {
   try {
     const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ success:false, message:'Missing fields' });
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "User not found" });
+    if (!user) return res.status(400).json({ success:false, message:'User not found' });
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: "Invalid password" });
+    if (!match) return res.status(400).json({ success:false, message:'Invalid credentials' });
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    res.json({ message: "Logged in", token });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ success:true, message:'Logged in', data:{ token } });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Login error" });
+    return res.status(500).json({ success:false, message:'Login failed' });
   }
 }
 
-async function getProfile(req, res) {
+export async function getProfile(req, res) {
   try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.json(user);
+    const id = req.userId || req.user?.id;
+    const user = await User.findById(id).select('-password');
+    return res.json({ success:true, data: user });
   } catch (err) {
-    res.status(500).json({ message: "Failed to get profile" });
+    console.error(err);
+    return res.status(500).json({ success:false, message:'Failed to get profile' });
   }
 }
-
-export default {
-  register,
-  login,
-  getProfile
-};

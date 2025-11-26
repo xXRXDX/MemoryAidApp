@@ -1,29 +1,38 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import { startInMemoryMongo } from './utils/db.js';
 
-import userRoutes from "./routes/userRoutes.js";
-import questRoutes from "./routes/questRoutes.js";
+import userRoutes from './routes/userRoutes.js';
+import questRoutes from './routes/questRoutes.js';
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-// ROUTES
-app.use("/auth", userRoutes);
-app.use("/quest", questRoutes);
+// routes
+app.use('/api/auth', userRoutes);
+app.use('/api/quests', questRoutes);
 
-// MONGO CONNECT
-mongoose.connect(process.env.MONGO_URI, {
-  dbName: "memoryapp",
-})
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.error("Mongo connection error:", err));
+// connect to DB: prefer MONGO_URI, else start in-memory
+const MONGO_URI = process.env.MONGO_URI;
+(async () => {
+  try {
+    if (MONGO_URI) {
+      await mongoose.connect(MONGO_URI);
+      console.log('Connected to MongoDB at', MONGO_URI);
+    } else {
+      const uri = await startInMemoryMongo();
+      await mongoose.connect(uri);
+      console.log('Connected to in-memory MongoDB');
+    }
+  } catch (err) {
+    console.error('Mongo connection error:', err);
+  }
 
-// SERVER
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+})();

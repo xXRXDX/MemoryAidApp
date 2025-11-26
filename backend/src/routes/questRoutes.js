@@ -1,16 +1,34 @@
+// src/routes/questRoutes.js
 import express from "express";
+import * as questController from "../controllers/questController.js";
 import auth from "../utils/authMiddleware.js";
-import questController from "../controllers/questController.js";
 
 const router = express.Router();
 
-router.post("/generate", auth, questController.generateToday);
-router.get("/today", auth, questController.getTodayQuests);
-router.post("/complete/:id", auth, questController.completeQuest);
-router.post("/custom", auth, questController.addCustomQuest);
-router.get("/templates", auth, questController.listTemplates);
-router.post("/generate/main", auth, questController.generateMainQuest);
-router.post("/generate/side", auth, questController.generateSideQuest);
-router.post("/regenerate", auth, questController.regenerateToday);
+// helper: ensure controller function exists and is a function — throws a clear error at startup
+function getHandler(name) {
+  const h = questController[name];
+  if (typeof h !== "function") {
+    // fail fast with a descriptive error so you can fix the controller export
+    throw new Error(
+      `questRoutes: controller function "${name}" is missing or not a function. ` +
+      `Available exports: ${Object.keys(questController).join(", ")}`
+    );
+  }
+  return h;
+}
+
+// routes (each uses named exports from controllers)
+router.post("/generate", auth, getHandler("generateToday"));
+router.post("/generate/force", auth, getHandler("forceGenerate"));
+router.get("/today", auth, getHandler("getTodayQuests"));
+router.post("/complete/:id", auth, getHandler("completeQuest"));
+
+router.post("/custom", auth, getHandler("addCustomQuest"));
+router.get("/templates", auth, getHandler("listTemplates"));
+
+router.post("/generate/main", auth, getHandler("generateMainQuest"));
+router.post("/generate/side", auth, getHandler("generateSideQuest"));
+router.post("/regenerate", auth, getHandler("regenerateToday"));
 
 export default router;

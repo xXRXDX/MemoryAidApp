@@ -1,10 +1,9 @@
-// src/models/UserQuest.js
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const UserQuestSchema = new mongoose.Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    questId: { type: mongoose.Schema.Types.ObjectId, ref: "Quest", default: null },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    questId: { type: mongoose.Schema.Types.ObjectId, ref: 'Quest', default: null },
 
     title: String,
     type: String,
@@ -13,16 +12,17 @@ const UserQuestSchema = new mongoose.Schema(
     xpReward: { type: Number, default: 10 },
     isCompleted: { type: Boolean, default: false },
 
-    // additional fields for frontend
-    action: { type: String, default: "" },
+    action: { type: String, default: '' },
     amount: { type: Number, default: 1 },
-    unit: { type: String, default: "" },
-    category: { type: String, default: "general" },
-    rarity: { type: String, default: "common" },
+    unit: { type: String, default: '' },
+    category: { type: String, default: 'general' },
+    rarity: { type: String, default: 'common' },
 
-    dateAssigned: { type: Date, default: Date.now }
+    dateAssigned: { type: Date, default: Date.now },
+    completedAt: { type: Date, default: null }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("UserQuest", UserQuestSchema);
+const UserQuest = mongoose.model('UserQuest', UserQuestSchema);
+export default UserQuest;

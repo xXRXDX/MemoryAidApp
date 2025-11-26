@@ -1,56 +1,28 @@
-// src/utils/difficultyScaler.js
-const UserQuest = require("../models/UserQuest");
+import UserQuest from "../models/UserQuest.js";
 
-const RARITY_MULTIPLIER = {
-  common: 1,
-  uncommon: 1.2,
-  rare: 1.5,
-  epic: 2
-};
-
-/**
- * Compute a difficultyLevel integer for a user
- * influences scaling (higher => larger amounts and XP)
- */
-async function computeDifficultyLevel(user) {
-  // completed quests count (safe fallback to 0)
-  const completedCount = await UserQuest.countDocuments({
-    userId: user._id,
-    isCompleted: true
-  }).catch(() => 0);
-
-  // formula tuned for prototypes: change constants to taste
-  const levelFromXP = Math.floor((user.totalXP || 0) / 200);      // every 200 XP = +1
-  const levelFromCompleted = Math.floor(completedCount / 50);    // every 50 finished quests = +1
-  const levelFromStreak = Math.floor((user.streakCount || 0) / 5); // every 5-day streak = +1
-
-  const difficultyLevel = 1 + levelFromXP + levelFromCompleted + levelFromStreak;
-  return difficultyLevel;
+export function computeDifficultyLevelFromTemplate(template) {
+  let difficulty = template.baseDifficulty || 1;
+  const rarityWeights = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 5 };
+  difficulty += rarityWeights[template.rarity] || 0;
+  const categoryMultiplier = { physical:1.2, mental:1.1, habit:1.0, productivity:1.3, creative:1.2, study:1.4, health:1.1, social:1.0 };
+  difficulty *= categoryMultiplier[template.category] || 1;
+  return Math.round(difficulty);
 }
 
-/**
- * Convert a base amount into scaled amount using difficultyLevel
- */
-function scaleAmount(baseAmount, difficultyLevel) {
-  // mild scaling: +10% per difficulty level above 1
-  const multiplier = 1 + (difficultyLevel - 1) * 0.12;
-  // ensure that integer quantities stay sensible
-  const scaled = Math.max(1, Math.round(baseAmount * multiplier));
-  return scaled;
+export async function computeDifficultyLevelForUser(user) {
+  const completedCount = await UserQuest.countDocuments({ userId: user._id, isCompleted: true }).catch(()=>0);
+  const levelFromXP = Math.floor((user.totalXP || 0) / 200);
+  const levelFromCompleted = Math.floor(completedCount / 50);
+  const levelFromStreak = Math.floor((user.streakCount || 0) / 5);
+  return 1 + levelFromXP + levelFromCompleted + levelFromStreak;
 }
 
-/**
- * Compute XP reward from template and difficulty level + rarity
- */
-function computeXP(baseXP, difficultyLevel, rarity = "common") {
-  const rarityMult = RARITY_MULTIPLIER[rarity] || 1;
-  const xp = Math.round(baseXP * (1 + (difficultyLevel - 1) * 0.18) * rarityMult);
-  return Math.max(1, xp);
+export function scaleAmount(template, difficultyLevel) {
+  const factor = 1 + difficultyLevel * 0.12;
+  return Math.max(1, Math.round((template.baseAmount || 1) * factor));
 }
 
-module.exports = {
-  computeDifficultyLevel,
-  scaleAmount,
-  computeXP,
-  RARITY_MULTIPLIER
-};
+export function computeXP(template, difficultyLevel) {
+  const rarityXP = { common:0, uncommon:5, rare:12, epic:20, legendary:30 };
+  return Math.max(1, Math.round((template.baseXP || 10) + difficultyLevel * 5 + (rarityXP[template.rarity] || 0)));
+}

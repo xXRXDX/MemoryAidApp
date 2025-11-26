@@ -1,12 +1,11 @@
-// src/utils/questTemplates.js
-module.exports = [
+export default [
   // Physical
   {
     key: "pushups",
     title: "Push-ups",
     action: "Do {amount} push-ups",
     category: "physical",
-    baseAmount: 10,       // reps
+    baseAmount: 10,
     unit: "reps",
     baseDifficulty: 2,
     baseXP: 15,
@@ -30,7 +29,7 @@ module.exports = [
     title: "Read",
     action: "Read for {amount} minutes",
     category: "mental",
-    baseAmount: 10,      // minutes
+    baseAmount: 10,
     unit: "minutes",
     baseDifficulty: 1,
     baseXP: 12,
