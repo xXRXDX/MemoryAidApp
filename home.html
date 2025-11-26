@@ -94,7 +94,7 @@
         <div class="mood-avatar">😊</div>
         <div class="mood-content">
           <div class="mood-text">Hi 👋 How are you feeling today?</div>
-          <button class="btn-mood-tracker">Open Mood Tracker</button>
+          <button class="btn-mood-tracker" onclick="window.location.href = 'mood-tracker.html'">Open Mood Tracker</button>
         </div>
       </div>
 
@@ -111,8 +111,10 @@
 </nav>
 
 <script>
+
   document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('greet').textContent = localStorage.getItem('stm_username') || 'Friend';
+
   });
 </script>
 </body>
