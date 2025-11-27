@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pet Game</title>
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pet-game-page">
+<main class="container">
+    <div class="phone" role="application" aria-label="Pet Game">
+        <div class="safe">
+            <div class="topbar">
+                <div class="logo">
+                    <div class="avatar">ME</div>
+                    <div>
+                        <p class="kv">SHORT-TERM MEMORY AID</p>
+                        <p class="title">Pet Game</p>
+                    </div>
+                </div>
+                <a href="pet-hangout.html" class="button">Back</a>
+            </div>
+
+
+            <div id="game-container">
+                <div class="ground"></div>
+                <div id="player">🐥</div>
+
+                <div class="game-over-modal" id="game-over-modal">
+                    <div class="game-over-title">Game Over!</div>
+                    <div class="game-over-score" id="final-score">Score: 0</div>
+                    <div class="btn-row">
+                    <button class="button" id="restart-btn">Play Again</button>
+                    <button href="pet-hangout.html" class="button">Back</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <a href="./home.html">Home</a>
+                <a href="./tasks.html">Tasks</a>
+                <a href="./streak-overview.html">Streak</a>
+                <a href="./avatar.html" class="active">Avatar</a>
+                <a href="./community.html">Community</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Game Elements
+    const gameContainer = document.getElementById("game-container")
+    const player = document.getElementById("player")
+    const gameOverModal = document.getElementById("game-over-modal")
+    const finalScoreDisplay = document.getElementById("final-score")
+    const restartBtn = document.getElementById("restart-btn")
+
+    // Game State
+    let playerScore = 0
+    let playerX = 0
+    let gameRunning = false
+    let foodInterval
+    let gameContainerWidth = 0
+
+    // Food and Trash items
+    const foodItems = "🌽"
+    const trashItems = "☠️"
+
+
+
+    // Start game automatically when page loads
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            gameContainerWidth = gameContainer.offsetWidth
+            playerX = gameContainerWidth / 2 - player.offsetWidth / 2
+            player.style.left = `${playerX}px`
+            startGame()
+        }, 100)
+    })
+
+    // Restart game
+    restartBtn.addEventListener("click", () => {
+        gameOverModal.classList.remove("active")
+        startGame()
+    })
+
+    // Touch controls
+    gameContainer.addEventListener(
+        "touchmove",
+        (e) => {
+            e.preventDefault()
+            if (gameRunning) {
+                const touch = e.touches[0]
+                const rect = gameContainer.getBoundingClientRect()
+                let newPlayerX = touch.clientX - rect.left - player.offsetWidth / 2
+
+                if (newPlayerX < 0) newPlayerX = 0
+                if (newPlayerX > gameContainerWidth - player.offsetWidth) {
+                    newPlayerX = gameContainerWidth - player.offsetWidth
+                }
+
+                playerX = newPlayerX
+                player.style.left = `${playerX}px`
+            }
+        },
+        { passive: false },
+    )
+
+    gameContainer.addEventListener(
+        "touchstart",
+        (e) => {
+            e.preventDefault()
+            if (gameRunning) {
+                const touch = e.touches[0]
+                const rect = gameContainer.getBoundingClientRect()
+                let newPlayerX = touch.clientX - rect.left - player.offsetWidth / 2
+
+                if (newPlayerX < 0) newPlayerX = 0
+                if (newPlayerX > gameContainerWidth - player.offsetWidth) {
+                    newPlayerX = gameContainerWidth - player.offsetWidth
+                }
+
+                playerX = newPlayerX
+                player.style.left = `${playerX}px`
+            }
+        },
+        { passive: false },
+    )
+
+    // Mouse controls (for desktop)
+    gameContainer.addEventListener("mousemove", (e) => {
+        if (gameRunning) {
+            const rect = gameContainer.getBoundingClientRect()
+            let newPlayerX = e.clientX - rect.left - player.offsetWidth / 2
+
+            if (newPlayerX < 0) newPlayerX = 0
+            if (newPlayerX > gameContainerWidth - player.offsetWidth) {
+                newPlayerX = gameContainerWidth - player.offsetWidth
+            }
+
+            playerX = newPlayerX
+            player.style.left = `${playerX}px`
+        }
+    })
+
+    // Create falling item (food or trash)
+    function createFallingItem() {
+        if (!gameRunning) return
+
+        const item = document.createElement("div")
+        item.classList.add("falling-item")
+
+        // 20% chance of trash
+        const isTrash = Math.random() < 0.2
+
+        if (isTrash) {
+            item.textContent = trashItems
+            item.dataset.type = "trash"
+        } else {
+            item.textContent = foodItems
+            item.dataset.type = "food"
+        }
+
+        item.style.left = `${Math.random() * (gameContainerWidth - 30)}px`
+        gameContainer.appendChild(item)
+
+        let itemY = -30
+        const fallSpeed = 3 + Math.random() * 2 // Random speed between 3-5
+
+        const fallInterval = setInterval(() => {
+            if (!gameRunning) {
+                item.remove()
+                clearInterval(fallInterval)
+                return
+            }
+
+            itemY += fallSpeed
+            item.style.top = `${itemY}px`
+
+            // Check collision with player
+            const playerRect = player.getBoundingClientRect()
+            const itemRect = item.getBoundingClientRect()
+
+            if (
+                itemRect.bottom >= playerRect.top &&
+                itemRect.top <= playerRect.bottom &&
+                itemRect.right >= playerRect.left &&
+                itemRect.left <= playerRect.right
+            ) {
+                if (item.dataset.type === "food") {
+                    // Caught food - increase score
+                    playerScore++
+                } else {
+                    // Caught trash - lose life
+                endGame()
+                }
+                item.remove()
+                clearInterval(fallInterval)
+                return
+            }
+
+            if (itemY > gameContainer.offsetHeight) {
+                item.remove()
+                clearInterval(fallInterval)
+            }
+        }, 20)
+    }
+
+
+    // Start game
+    function startGame() {
+        // Reset state
+        playerScore = 0
+        gameRunning = true
+
+        // Update displays
+            gameOverModal.classList.remove("active")
+
+        // Clear any existing falling items
+        document.querySelectorAll(".falling-item").forEach((item) => item.remove())
+
+        // Start spawning items
+        foodInterval = setInterval(createFallingItem, 800)
+    }
+
+    // End game
+    function endGame() {
+        gameRunning = false
+        clearInterval(foodInterval)
+
+        // Remove all falling items
+        document.querySelectorAll(".falling-item").forEach((item) => item.remove())
+
+
+        finalScoreDisplay.textContent = `Score: ${playerScore}`
+
+        gameOverModal.classList.add("active")
+    }
+
+</script>
+</body>
+</html>
