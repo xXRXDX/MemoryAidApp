@@ -6,6 +6,7 @@
     <title>Add New Task</title>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="add-task.css"/>
+<link rel="stylesheet" href="style_mod.css">
 </head>
 <body>
 <nav class="app-nav">
@@ -16,6 +17,14 @@
 <main class="container">
     <div class="phone" role="application" aria-label="Add New Task">
         <div class="safe">
+    <form id="add-task-form" class="card">
+      <div><label>Title: <input name="title" required></label></div>
+      <div><label>Realm: <select name="realm"><option value="wisdom">Wisdom</option><option value="strength">Strength</option><option value="spirit">Spirit</option></select></label></div>
+      <div><label>Time (optional, HH:MM): <input name="time" placeholder="14:30"></label></div>
+      <div><label><input type="checkbox" name="proof"> Require photo proof</label></div>
+      <div style="margin-top:8px;"><button type="submit" class="button">Add Task</button></div>
+    </form>
+    
 
             <!-- Header -->
             <div class="topbar">
