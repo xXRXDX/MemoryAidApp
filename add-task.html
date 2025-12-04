@@ -9,78 +9,37 @@
 <link rel="stylesheet" href="style_mod.css">
 </head>
 <body>
-<nav class="app-nav">
-    <div class="brand">App</div>
-    <a href="index.html">Home</a>
-</nav>
+
 
 <main class="container">
     <div class="phone" role="application" aria-label="Add New Task">
         <div class="safe">
-    <form id="add-task-form" class="card">
-      <div><label>Title: <input name="title" required></label></div>
-      <div><label>Realm: <select name="realm"><option value="wisdom">Wisdom</option><option value="strength">Strength</option><option value="spirit">Spirit</option></select></label></div>
-      <div><label>Time (optional, HH:MM): <input name="time" placeholder="14:30"></label></div>
-      <div><label><input type="checkbox" name="proof"> Require photo proof</label></div>
-      <div style="margin-top:8px;"><button type="submit" class="button">Add Task</button></div>
-    </form>
-    
+    <div class="card integrated-task-card" style="max-width:520px;margin:10px auto;padding:16px;border-radius:12px;">
+      <h3 style="margin-top:0">Add New Task</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;" id="preset-list">
+        <button type="button" class="preset-btn" data-title="Keep journal">Keep journal</button>
+        <button type="button" class="preset-btn" data-title="Take short walks">Take short walks</button>
+        <button type="button" class="preset-btn" data-title="Night Review">Night Review</button>
+        <button type="button" class="preset-btn" data-title="Clear Space">Clear Space</button>
+      </div>
 
-            <!-- Header -->
-            <div class="topbar">
-                <div class="title">Add New Task</div>
-            </div>
-
-            <!-- Task Form Card -->
-            <div class="card task-form-card">
-
-                <!-- Preferred Task Dropdown -->
-                <div class="form-group">
-                    <select id="preferredTask" class="task-dropdown" aria-label="Select Preferred Task">
-                        <option value="">Select Preferred Task....</option>
-                        <option value="Keep journal">Keep journal</option>
-                        <option value="Take short walks">Take short walks</option>
-                        <option value="Night Review">Night Review</option>
-                        <option value="Clear Space">Clear Space</option>
-                    </select>
-                </div>
-
-                <!-- Custom Task Input -->
-                <div class="form-group">
-                    <label for="customTask" class="form-label">Custom task</label>
-                    <input type="text" id="customTask" class="form-input" placeholder="What do you need to do?" aria-label="Custom task input"/>
-                </div>
-
-                <!-- Description Textarea -->
-                <div class="form-group">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea id="description" class="form-textarea" placeholder="Add more details..." aria-label="Task description"></textarea>
-                </div>
-
-            </div>
-
-            <!-- Priority Section -->
-            <div class="priority-section">
-                <div class="priority-label">Priority</div>
-                <div class="priority-buttons">
-                    <button class="priority-btn" data-priority="high" aria-label="High priority">High</button>
-                    <button class="priority-btn" data-priority="medium" aria-label="Medium priority">Medium</button>
-                    <button class="priority-btn" data-priority="low" aria-label="Low priority">Low</button>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button class="btn-cancel" onclick="window.history.back()">Cancel</button>
-                <button class="btn-generate" onclick="saveTask()">Generate</button>
-            </div>
-
+      <form id="add-task-form">
+        <div style="margin-bottom:8px;"><label>Title:<br><input id="task-title" name="title" required style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd"></label></div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;"><label style="flex:1">Realm:<br><select id="task-realm" name="realm" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd"><option value="wisdom">Wisdom</option><option value="strength">Strength</option><option value="spirit">Spirit</option></select></label>
+        <label style="flex:1">Date:<br><input id="task-date" name="date" type="date" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd"></label></div>
+        <div style="margin-bottom:8px;"><label>Time (HH:MM):<br><input id="task-time" name="time" type="time" style="width:160px;padding:8px;border-radius:8px;border:1px solid #ddd"></label></div>
+        <div style="margin-bottom:8px;"><label>Description:<br><textarea id="task-desc" name="desc" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd" rows="3"></textarea></label></div>
+        <div style="margin-bottom:8px;"><label><input id="task-proof" type="checkbox" name="proof"> Require photo proof</label></div>
+        <div style="text-align:right;"><button class="button" id="add-task-btn" type="submit">Add Task</button></div>
+      </form>
+    </div>
+    <div id="add-task-result" style="max-width:520px;margin:0 auto;"></div>
         </div>
     </div>
 </main>
 
 <nav class="bottom-nav" role="navigation" aria-label="Main">
-    <a href="index.html">Home</a>
+    <a href="home.html">Home</a>
     <a href="tasks.html">Tasks</a>
 </nav>
 
@@ -102,12 +61,9 @@
     });
 
     function saveTask() {
-        const preferredTask = document.getElementById('preferredTask').value;
         const customTask = document.getElementById('customTask').value;
         const description = document.getElementById('description').value;
 
-        // Use custom task if provided, otherwise use preferred task
-        const taskName = customTask || preferredTask;
 
         if (!taskName) {
             alert('Please select or enter a task name');
@@ -141,5 +97,86 @@
         window.location.href = questPage;
     }
 </script>
+
+<script>
+(function(){
+  function read(key, def){ return JSON.parse(localStorage.getItem(key) || JSON.stringify(def)); }
+  function write(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+  // preset buttons behaviour
+  document.querySelectorAll('.preset-btn').forEach(b=>{
+    b.style.padding='8px 12px'; b.style.borderRadius='8px'; b.style.border='1px solid #cfe'; b.style.background='white'; b.style.cursor='pointer';
+    b.addEventListener('click', ()=>{
+      // deselect others
+      document.querySelectorAll('.preset-btn').forEach(x=>{ x.classList.remove('selected'); x.style.background='white'; x.style.color=''; });
+      b.classList.add('selected');
+      b.style.background='#1e90ff'; b.style.color='white';
+      // fill title
+      document.getElementById('task-title').value = b.dataset.title;
+    });
+  });
+
+  // add task handling
+  document.getElementById('add-task-form').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    const title = document.getElementById('task-title').value.trim();
+    const realm = document.getElementById('task-realm').value;
+    const date = document.getElementById('task-date').value; // YYYY-MM-DD
+    const time = document.getElementById('task-time').value; // HH:MM
+    const desc = document.getElementById('task-desc').value;
+    const proof = document.getElementById('task-proof').checked;
+    if(!title){ alert('Please enter a title'); return; }
+    // Save task object
+    const tasks = read('stm_tasks', []);
+    const id = 't_'+Date.now();
+    const task = { id, title, realm, date, time, desc, proof, created:Date.now() };
+    tasks.unshift(task);
+    write('stm_tasks', tasks);
+    document.getElementById('add-task-result').innerHTML = '<div style="padding:10px;background:#e7fff7;border-radius:8px;margin-top:8px">Task added ✓</div>';
+    // Schedule notification if date & time provided
+    if(date && time){
+      scheduleNotification(task);
+    }
+    // reset form
+    document.getElementById('add-task-form').reset();
+    document.querySelectorAll('.preset-btn').forEach(x=>{ x.classList.remove('selected'); x.style.background='white'; x.style.color=''; });
+    // refresh task list if on tasks page (some pages include a task list area)
+    if(window.renderTaskList) window.renderTaskList();
+  });
+
+  // Notification scheduling: compute ms until target; schedule with setTimeout and play ringtone.
+  function scheduleNotification(task){
+    try{
+      const [hh,mm] = task.time.split(':');
+      const [y,m,d] = task.date.split('-');
+      const target = new Date(Number(y), Number(m)-1, Number(d), Number(hh||0), Number(mm||0), 0, 0);
+      const now = new Date();
+      const diff = target - now;
+      if(diff <= 0) return; // past
+      setTimeout(()=>{
+        // highlight in UI
+        const tasks = read('stm_tasks', []);
+        // show notification
+        if(window.Notification && Notification.permission === 'granted'){
+          new Notification('Task Reminder', { body: task.title });
+        } else {
+          alert('Task Reminder: ' + task.title);
+        }
+        // ringtone (data-driven if exists)
+        try{ const a = new Audio('js/ringtone.mp3'); a.play().catch(()=>{}); }catch(e){}
+      }, diff);
+    }catch(e){ console.error(e); }
+  }
+
+  // On load, schedule existing tasks that have date/time in future (one-time scheduling)
+  (function scheduleExisting(){
+    const tasks = read('stm_tasks', []);
+    tasks.forEach(t=>{ if(t.date && t.time) scheduleNotification(t); });
+  })();
+
+})(); // IIFE
+</script>
+    
+<script src="js/tasks_ui.js"></script>
 </body>
 </html>

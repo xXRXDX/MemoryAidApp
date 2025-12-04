@@ -8,20 +8,12 @@
 </head>
 
 <body>
-<nav class="app-nav">
-    <div class="brand">App</div>
-    <a href="index.html">Home</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="daily-quests.html">Daily Quests</a>
-    <a href="main-missions.html">Main Missions</a>
-    <a href="side-quests.html">Side Quests</a>
-</nav>
+
 <main class="container">
     <div class="phone" role="application" aria-label="Side Quests">
         <div class="safe">
             <div class="topbar">
-                <div class="logo">
-                    <div class="avatar">ME</div>
+                
                     <div>
                         <div class="kv">SHORT-TERM MEMORY AID</div>
                         <div class="title">Side Quests</div>
@@ -29,14 +21,14 @@
                 </div>
                 <div><a href="tasks.html" class="small">Back</a></div>
             </div>
-            <div class="card">
+            <div class="card"><div id="side-list"></div>
                 <div id="side-quests-list"></div>
             </div>
         </div>
     </div>
 </main>
 <nav class="bottom-nav" role="navigation" aria-label="Main">
-    <a href="index.html">Home</a>
+    <a href="home.html">Home</a>
     <a href="tasks.html">Tasks</a>
 </nav>
 <script>
@@ -69,5 +61,20 @@
 
     document.addEventListener('DOMContentLoaded', loadSideQuests);
 </script>
+<script src="js/tasks_ui.js"></script>
 </body>
 </html>
+
+<script>
+function startMissionFromTask(name,time){
+    localStorage.setItem('stm_active_task', JSON.stringify({name:name,time:time}));
+    window.location.href="focus-timer.html";
+}
+document.querySelectorAll('.task-item').forEach(el=>{
+    el.onclick=()=>{
+        const name=el.dataset.name;
+        const time=el.dataset.time||"";
+        if(confirm("Start this mission?")) startMissionFromTask(name,time);
+    };
+});
+</script>
