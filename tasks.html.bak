@@ -11,7 +11,7 @@
 
 <main class="container">
     <div class="phone" role="application" aria-label="Tasks">
-        <div class="safe"><div class="page-content">
+        <div class="safe">
             <div class="title">Tasks</div></div></div><div><a href="tasks.html" class="small">Back</a></div></div>
             <div class="card"><div id="task-list"></div>
                 <div class="my-tasks-header">
@@ -127,8 +127,6 @@
         })();
     </script>
 </main>
-<script src="js/tasks_ui.js"></script>
-<script src="js/generate_quests.js"></script>
 <script src="js/tasks_ui.js"></script>
 </body></html>
 

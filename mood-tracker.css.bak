@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #e0f2f1 0%, #e1f5fe 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Updated heading styles to match reference image */
+.mood-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.mood-subtitle {
+    font-size: 14px;
+    color: #666666;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+/* Styled mood buttons with emojis and labels */
+.mood-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mood-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    padding: 16px 12px;
+    background-color: #a8d8d8;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.mood-btn:hover {
+    background-color: #95cdd0;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.mood-btn.selected {
+    background-color: #7ab8bd;
+    border-color: #5aa8ad;
+}
+
+.mood-emoji {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.mood-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333333;
+}
+
+/* Styled notes section */
+.notes-section {
+    margin-top: 12px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+    transition: all 0.2s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #a8d8d8;
+    box-shadow: 0 0 0 3px rgba(168, 216, 216, 0.1);
+}

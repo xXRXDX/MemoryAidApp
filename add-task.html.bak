@@ -13,7 +13,7 @@
 
 <main class="container">
     <div class="phone" role="application" aria-label="Add New Task">
-        <div class="safe"><div class="page-content">
+        <div class="safe">
     <div class="card integrated-task-card" style="max-width:520px;margin:10px auto;padding:16px;border-radius:12px;">
       <h3 style="margin-top:0">Add New Task</h3>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;" id="preset-list">
@@ -177,8 +177,6 @@
 })(); // IIFE
 </script>
     
-<script src="js/tasks_ui.js"></script>
-<script src="js/generate_quests.js"></script>
 <script src="js/tasks_ui.js"></script>
 </body>
 </html>

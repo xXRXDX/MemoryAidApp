@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Setup</title>
+    <!-- Added style.css link to match index.html structure -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="user-setup.css">
+</head>
+<body class="setup-page">
+<!-- Added navigation from index.html -->
+
+
+<!-- Wrapped content in main.container > div.phone structure to match index.html -->
+<main class="container">
+    <div class="phone" role="application" aria-label="User Setup">
+        <div class="safe">
+            <div class="setup-container">
+                <div class="setup-card">
+                    <h1 class="setup-title">Let's Get to Know You</h1>
+
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="e.g name@gmail.com">
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Choose a username">
+                    </div>
+
+                    <!-- Birthday Field -->
+                    <div class="form-group">
+                        <label>Enter your birthday</label>
+                        <div class="date-input-wrapper">
+                            <label for="birthday-display"></label><input type="text" id="birthday-display" placeholder="Select your birthday" readonly>
+                            <button type="button" class="calendar-btn" onclick="toggleCalendar()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                                    <line x1="16" x2="16" y1="2" y2="6"/>
+                                    <line x1="8" x2="8" y1="2" y2="6"/>
+                                    <line x1="3" x2="21" y1="10" y2="10"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Calendar Popup -->
+                        <div id="calendar-popup" class="calendar-popup hidden">
+                            <div class="calendar-header">
+                                <label for="month-select"></label><select id="month-select" onchange="updateCalendar()"></select>
+                                <label for="year-select"></label><select id="year-select" onchange="updateCalendar()"></select>
+                            </div>
+
+                            <div class="calendar-weekdays">
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                            </div>
+
+                            <div id="calendar-days" class="calendar-days"></div>
+
+                            <div class="calendar-footer">
+                                <button type="button" class="calendar-footer-btn" onclick="selectToday()">Today</button>
+                                <button type="button" class="calendar-footer-btn" onclick="clearDate()">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Condition Type -->
+                    <div class="form-group">
+                        <label>Condition Type</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="condition" value="adhd">
+                                <span class="radio-circle"></span>
+                                <span>ADHD</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="condition" value="depression">
+                                <span class="radio-circle"></span>
+                                <span>Depression</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="condition" value="both">
+                                <span class="radio-circle"></span>
+                                <span>Both</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="condition" value="none">
+                                <span class="radio-circle"></span>
+                                <span>None/Prefer not to say</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Notification Style -->
+                    <!-- Notification Style -->
+                    <div class="form-group">
+                        <label for="notification-style">Notification Style</label>
+                        <div class="select-wrapper">
+                            <select id="notification-style">
+                                <option value="" disabled selected>Choose notification style</option>
+                                <option value="gentle">Gentle Reminders</option>
+                                <option value="motivational">Motivational</option>
+                                <option value="direct">Direct & Simple</option>
+                                <option value="minimal">Minimal</option>
+                                <option value="none">None</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-group">
+                        <button type="button" class="btn btn-back">Back</button>
+                        <button type="button" class="btn btn-continue">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Calendar state
+    let currentMonth = new Date().getMonth()
+    let currentYear = new Date().getFullYear()
+    let selectedDate = null
+
+    // Month names
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ]
+
+    // Initialize calendar
+    document.addEventListener("DOMContentLoaded", () => {
+        initializeSelects()
+        updateCalendar()
+
+        const continueBtn = document.querySelector(".btn-continue")
+        if (continueBtn) {
+            continueBtn.addEventListener("click", handleContinue)
+        }
+    })
+
+    // Initialize month and year dropdowns
+    function initializeSelects() {
+        const monthSelect = document.getElementById("month-select")
+        const yearSelect = document.getElementById("year-select")
+
+        // Populate months
+        months.forEach((month, index) => {
+            const option = document.createElement("option")
+            option.value = index
+            option.textContent = month
+            monthSelect.appendChild(option)
+        })
+
+        // Populate years (1920 to current year, newest first)
+        const currentYear = new Date().getFullYear()
+        for (let year = currentYear; year >= 1920; year--) {
+            const option = document.createElement("option")
+            option.value = year
+            option.textContent = year
+            yearSelect.appendChild(option)
+        }
+
+        // Set default values
+        monthSelect.value = currentMonth
+        yearSelect.value = currentYear
+    }
+
+    // Toggle calendar visibility
+    function toggleCalendar() {
+        const popup = document.getElementById("calendar-popup")
+        popup.classList.toggle("hidden")
+    }
+
+    // Close calendar when clicking outside
+    document.addEventListener("click", (e) => {
+        const popup = document.getElementById("calendar-popup")
+        const wrapper = document.querySelector(".date-input-wrapper")
+
+        if (!wrapper.contains(e.target) && !popup.contains(e.target)) {
+            popup.classList.add("hidden")
+        }
+    })
+
+    // Update calendar display
+    function updateCalendar() {
+        const monthSelect = document.getElementById("month-select")
+        const yearSelect = document.getElementById("year-select")
+        const daysContainer = document.getElementById("calendar-days")
+
+        currentMonth = Number.parseInt(monthSelect.value)
+        currentYear = Number.parseInt(yearSelect.value)
+
+        // Clear previous days
+        daysContainer.innerHTML = ""
+
+        // Get first day of month and total days
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay()
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+        const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate()
+
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        // Previous month days
+        for (let i = firstDay - 1; i >= 0; i--) {
+            const day = daysInPrevMonth - i
+            const btn = createDayButton(day, "outside")
+            daysContainer.appendChild(btn)
+        }
+
+        // Current month days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(currentYear, currentMonth, day)
+            const isToday = date.getTime() === today.getTime()
+            const isFuture = date > today
+            const isSelected =
+                selectedDate &&
+                selectedDate.getDate() === day &&
+                selectedDate.getMonth() === currentMonth &&
+                selectedDate.getFullYear() === currentYear
+
+            let className = ""
+            if (isToday) className += " today"
+            if (isFuture) className += " disabled"
+            if (isSelected) className += " selected"
+
+            const btn = createDayButton(day, className.trim(), !isFuture ? () => selectDay(day) : null)
+            daysContainer.appendChild(btn)
+        }
+
+        // Next month days (fill remaining grid)
+        const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7
+        const remainingDays = totalCells - (firstDay + daysInMonth)
+
+        for (let day = 1; day <= remainingDays; day++) {
+            const btn = createDayButton(day, "outside")
+            daysContainer.appendChild(btn)
+        }
+    }
+
+    // Create a day button
+    function createDayButton(day, className, onClick) {
+        const btn = document.createElement("button")
+        btn.type = "button"
+        btn.className = "calendar-day " + className
+        btn.textContent = day
+        if (onClick) {
+            btn.addEventListener("click", onClick)
+        }
+        return btn
+    }
+
+    // Select a day
+    function selectDay(day) {
+        selectedDate = new Date(currentYear, currentMonth, day)
+
+        // Update display
+        const display = document.getElementById("birthday-display")
+        display.value = formatDate(selectedDate)
+
+        // Update calendar
+        updateCalendar()
+
+        // Close popup
+        document.getElementById("calendar-popup").classList.add("hidden")
+    }
+
+    // Select today
+    function selectToday() {
+        const today = new Date()
+        currentMonth = today.getMonth()
+        currentYear = today.getFullYear()
+
+        document.getElementById("month-select").value = currentMonth
+        document.getElementById("year-select").value = currentYear
+
+        selectDay(today.getDate())
+    }
+
+    // Clear date
+    function clearDate() {
+        selectedDate = null
+        document.getElementById("birthday-display").value = ""
+        updateCalendar()
+    }
+
+    // Format date as DD/MM/YYYY
+    function formatDate(date) {
+        const day = String(date.getDate()).padStart(2, "0")
+        const month = String(date.getMonth() + 1).padStart(2, "0")
+        const year = date.getFullYear()
+        return `${day}/${month}/${year}`
+    }
+
+    function validateForm() {
+        const email = document.getElementById("email").value.trim()
+        const username = document.getElementById("username").value.trim()
+        const birthday = document.getElementById("birthday-display").value.trim()
+        const condition = document.querySelector('input[name="condition"]:checked')
+        const notificationStyle = document.getElementById("notification-style").value
+
+        const errors = []
+
+        if (!email) {
+            errors.push("Please enter your email")
+        } else if (!isValidEmail(email)) {
+            errors.push("Please enter a valid email address")
+        }
+
+        if (!username) {
+            errors.push("Please enter a username")
+        }
+
+        if (!birthday) {
+            errors.push("Please select your birthday")
+        }
+
+        if (!condition) {
+            errors.push("Please select a condition type")
+        }
+
+        if (!notificationStyle) {
+            errors.push("Please choose a notification style")
+        }
+
+        return errors
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
+    }
+
+    function handleContinue() {
+        const errors = validateForm()
+
+        // Remove any existing error messages
+        const existingError = document.querySelector(".form-error")
+        if (existingError) {
+            existingError.remove()
+        }
+
+        if (errors.length > 0) {
+            // Show error message
+            const errorDiv = document.createElement("div")
+            errorDiv.className = "form-error"
+            errorDiv.innerHTML = errors.map((err) => `<p>${err}</p>`).join("")
+
+            const buttonGroup = document.querySelector(".button-group")
+            buttonGroup.parentNode.insertBefore(errorDiv, buttonGroup)
+
+            // Scroll to error
+            errorDiv.scrollIntoView({ behavior: "smooth", block: "center" })
+        } else {
+            // All fields valid, navigate to guidelines page
+            window.location.href = "guidelines.html"
+        }
+    }
+
+
+</script>
+</body>
+</html>

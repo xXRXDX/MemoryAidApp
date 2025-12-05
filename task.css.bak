@@ -1,0 +1,219 @@
+body, html { margin:0; padding:0; }
+/* Quest category styling for tasks page */
+
+.quest-category {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.quest-category.daily-quests {
+    border-top: 4px solid #6b9ac4;
+}
+
+.quest-category.main-missions {
+    border-top: 4px solid #7ac978;
+}
+
+.quest-category.side-quests {
+    border-top: 4px solid #5fc5c5;
+}
+
+.quest-category-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+.quest-category.daily-quests .quest-category-title {
+    color: #6b9ac4;
+}
+
+.quest-category.main-missions .quest-category-title {
+    color: #7ac978;
+}
+
+.quest-category.side-quests .quest-category-title {
+    color: #5fc5c5;
+}
+
+.quest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.quest-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.quest-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.quest-item.completed label {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+/* Add quest navigation styles */
+.my-tasks-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.quest-nav-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 32px 0;
+}
+
+.quest-nav-btn {
+    display: block;
+    padding: 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quest-nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.quest-nav-btn.daily-quests-nav {
+    background: linear-gradient(135deg, #7db3d4 0%, #6b9ac4 100%);
+}
+
+.quest-nav-btn.main-missions-nav {
+    background: linear-gradient(135deg, #8dd98d 0%, #7ac978 100%);
+}
+
+.quest-nav-btn.side-quests-nav {
+    background: linear-gradient(135deg, #6fd5d5 0%, #5fc5c5 100%);
+}
+
+.add-task-bottom {
+    width: 100%;
+    margin-top: 24px;
+    padding: 16px;
+    font-size: 16px;
+}
+/* Added quest category styling */
+.quest-category {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.quest-category.daily-quests {
+    border-top: 4px solid #6B9AC4;
+}
+
+.quest-category.main-missions {
+    border-top: 4px solid #7AC978;
+}
+
+.quest-category.side-quests {
+    border-top: 4px solid #5FC5C5;
+}
+
+.quest-category-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+.quest-category.daily-quests .quest-category-title {
+    color: #6B9AC4;
+}
+
+.quest-category.main-missions .quest-category-title {
+    color: #7AC978;
+}
+
+.quest-category.side-quests .quest-category-title {
+    color: #5FC5C5;
+}
+
+.quest-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.quest-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.quest-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.quest-item.completed label {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+/* Added quest navigation button styling */
+.quest-nav-container {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.quest-nav-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #222;
+    font-weight: 700;
+}
+
+.daily-quests-nav {
+    background-color: #6B9AC4;
+    color: white;
+}
+
+.main-missions-nav {
+    background-color: #7AC978;
+    color: white;
+}
+
+.side-quests-nav {
+    background-color: #5FC5C5;
+    color: white;
+}
+
+.add-task-bottom {
+    margin-top: 12px;
+}

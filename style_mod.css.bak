@@ -1,29 +1,4 @@
 
-
-/* Layout grid for page-content: align cards horizontally on wide screens */
-.page-content { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important; gap: 20px !important; align-items: start !important; }
-
-/* Reduce phone top margin to pull content up */
-.phone { margin-top: 8px !important; }
-
-/* Reduce empty space within cards and make them consistent */
-.card { margin: 0 !important; padding: 12px !important; box-shadow: 0 6px 20px rgba(10,40,60,0.04) !important; }
-
-/* Ensure bottom nav does not overlap clickable items */
-.safe { padding-bottom: 140px !important; }
-
-/* Ensure nav buttons appear centered and not overlapping */
-.bottom-nav { left: 50% !important; transform: translateX(-50%) !important; }
-
-/* Fix for split columns on home: allow centered content with max width */
-.page-content-centered { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 220px 1fr 220px; gap: 24px; }
-
-/* For smaller screens, fallback */
-@media(max-width: 900px){
-  .page-content, .page-content-centered { grid-template-columns: 1fr !important; }
-}
-
-
 /* Emergency layout fixes: remove topbar and large top gap */
 .topbar{display:none !important;}
 .page-content{margin-top:0 !important; padding-top:6px !important;}

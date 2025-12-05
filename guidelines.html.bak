@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>User Setup Guidelines</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="guidelines.css" />
+</head>
+
+<body>
+
+
+<main class="container">
+    <div class="phone" role="application" aria-label="Setup Terms">
+        <div class="safe">
+
+            <h1 class="setup-title">Let's Get to Know You</h1>
+
+            <div class="terms-card">
+                <h3>Terms & Conditions</h3>
+                <p>
+                    1. Acceptance<br>
+                    By using this app, you agree to comply with these Terms & Conditions.<br><br>
+
+                    2. Purpose of the App<br>
+                    This app is designed to help users manage tasks,
+                    track progress, and stay motivated.<br><br>
+
+                    3. User Responsibilities<br>
+                    You are responsible for providing accurate information.<br><br>
+
+                    4. Privacy<br>
+                    Personal data is stored securely and used only for app functionality.<br><br>
+
+                    5. Content<br>
+                    All images and content are for personal use only.<br><br>
+
+                    6. Limitations<br>
+                    This app is not a substitute for professional medical advice.<br><br>
+
+                    7. Updates and Changes<br>
+                    Terms can be updated periodically.<br><br>
+
+                    8. Contact<br>
+                    Contact support from the app settings.<br><br>
+                </p>
+            </div>
+
+            <div class="terms-checkbox">
+                <input type="checkbox" id="agree">
+                <label for="agree">I agree to Terms & Conditions</label>
+            </div>
+
+            <div class="form-buttons">
+                
+                <button id="continueBtn" class="btn btn-primary" disabled>Continue</button>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+</body>
+
+<script>
+    const agreeBox = document.getElementById('agree');
+    const continueBtn = document.getElementById('continueBtn');
+
+    agreeBox.addEventListener('change', () => {
+        continueBtn.disabled = !agreeBox.checked;
+    });
+
+    continueBtn.addEventListener('click', () => {
+        if (agreeBox.checked) {
+            window.location.href = "home.html";
+        }
+    });
+</script>
+
+</html>

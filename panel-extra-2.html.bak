@@ -3,15 +3,12 @@
 <head>
     <link rel="stylesheet" href="style.css">
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>User Info</title><link rel="stylesheet" href="styles.css"/></head><body>
+<title>Extra 2</title><link rel="stylesheet" href="styles.css"/></head><body>
 
 <main class="container">
-<div class="phone" role="application" aria-label="User Info">
+<div class="phone" role="application" aria-label="Extra 2">
     <div class="safe">
-      
-<div class="title">User Info</div></div></div><div><a href="home.html" class="small">Done</a></div></div>
-<div class="card"><div style="font-weight:700">User Information</div><div class="kv" style="margin-top:8px">Summary of the setup</div><div style="margin-top:12px"><div class="card">Preference 1: ...</div><div class="card">Preference 2: ...</div></div></div>
-
+      <div class='card'><div style='font-weight:700'>Extra panel 2</div><div class='kv'>Placeholder recreated UI</div></div>
     </div>
   </div>
   <nav class="bottom-nav" role="navigation" aria-label="Main">

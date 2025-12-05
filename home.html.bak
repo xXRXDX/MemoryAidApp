@@ -11,7 +11,7 @@
 
 <main class="container">
   <div class="phone" role="application" aria-label="Home">
-    <div class="safe"><div class="page-content page-content-centered">
+    <div class="safe">
       
       
             <div class="title">Home</div>
@@ -82,7 +82,7 @@
         </div>
       </div>
 
-    </div></div>
+    </div>
   </div>
 </main>
 
@@ -101,8 +101,6 @@
 
   });
 </script>
-<script src="js/tasks_ui.js"></script>
-<script src="js/generate_quests.js"></script>
 <script src="js/tasks_ui.js"></script>
 </body>
 </html>

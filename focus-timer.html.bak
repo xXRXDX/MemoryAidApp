@@ -34,6 +34,5 @@
 </main>
 <script src="js/generate_quests.js"></script>
 <script src="js/tasks_ui.js"></script>
-<script src="js/focus_timer_mod.js"></script>
 </body>
 </html>
